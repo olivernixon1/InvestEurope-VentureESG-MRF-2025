@@ -50,7 +50,7 @@ organizational_policies_in_place_esg_related_policies_keys = [
     "code_of_conduct",
     "written_salary_remuneration_policy",
     "supply_chain_policy",
-    "cybersecurity_data_management_policyt"
+    "cybersecurity_data_management_policy"
 ]
 
 # Master Array of Interdependencies

@@ -1,3 +1,5 @@
+from .options import country_list, nace_divisions, iso_currency_code, management_and_board_position_list, ems_presence_select, ghg_scope_list, ghg_scope_1_methodology, ghg_scope_2_methodology, ghg_scope_3_methodology, decarbonisation_strategy, ghg_reduction_target, long_term_net_zero_goal
+
 SCHEMA = {
 
     #String
@@ -62,7 +64,7 @@ SCHEMA = {
     "listed": {
         "type": "string",
         "allowed": ["yes", "no"],
-    }
+    },
 
     #String
     "listed_ticker": {
@@ -314,19 +316,19 @@ SCHEMA = {
     "decarbonisation_strategy_set": {
         "type": "string",
         "allowed": decarbonisation_strategy,
-    }
+    },
 
     #STRING from ghg_reduction_target
     "ghg_reduction_target_set": {
         "type": "string",
         "allowed": ghg_reduction_target,
-    }
+    },
 
     #STRING from long_term_net_zero_goal
     "long_term_net_zero_goal_set": {
         "type": "string",
         "allowed": long_term_net_zero_goal,
-    }
+    },
 
     #Float (positive)
     "total_energy_consumption": {"type": "float", 'min': 0},

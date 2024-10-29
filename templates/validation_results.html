@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Validation Results</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Validation Results</h1>
+    <table>
+    <thead>
+        <tr>
+            <th>CSV Line</th>
+            <th>Compound ID</th>
+            <th>Validation Result</th>
+            <th>Value</th>  <!-- New column for Value -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for error in errors %}
+            <tr>
+                <td>{{ error.csv_line }}</td>
+                <td>{{ error.compound_id }}</td>
+                <td>{{ error.validation_result }}</td>
+                <td>{{ error.value if error.validation_result == 'valid' else 'N/A' }}</td>  <!-- Show Value or N/A -->
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>
