@@ -8,15 +8,19 @@ Download the source code of the project to a single folder.
 
 If you do not have Python 3 installed, go to https://www.python.org/downloads/ and install Python 3.13.
 
-The validator requires two dependencies to be installed. Open a terminal window and type:
+The validator requires two dependencies to be installed. Open a terminal window and run:
 
+```
 pip3 install flask
+```
+Then run: 
+```
 pip3 install cerberus
-
+```
 You can now run the project. In the terminal window, type:
-
+```
 python3 [file path of your Invest Europe VentureESG Validator.py file]
-
+```
 And hit enter.
 
 Go to your browser and enter http://127.0.0.1:5000/ in the URL bar. The validator should be running locally there.
