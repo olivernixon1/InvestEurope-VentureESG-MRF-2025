@@ -1,4 +1,3 @@
-
 import csv
 import os
 from cerberus import Validator
