@@ -354,11 +354,11 @@ SCHEMA = {
     "number_ftes_end_of_period_gender:gender:non_binary": {"type": "float", 'min': 0},
     "number_ftes_end_of_period_gender:gender:non_disclosed": {"type": "float", 'min': 0},
 
-    #Integer (positive)
-    "number_csuite_employees_fte_gender:gender:female": {"type": "integer", 'min': 0},
-    "number_csuite_employees_fte_gender:gender:male": {"type": "integer", 'min': 0},
-    "number_csuite_employees_fte_gender:gender:non_binary": {"type": "integer", 'min': 0},
-    "number_csuite_employees_fte_gender:gender:non_disclosed": {"type": "integer", 'min': 0},
+    #Float (positive) — note: number of FTEs can be non-integer
+    "number_csuite_employees_fte_gender:gender:female": {"type": "float", 'min': 0},
+    "number_csuite_employees_fte_gender:gender:male": {"type": "float", 'min': 0},
+    "number_csuite_employees_fte_gender:gender:non_binary": {"type": "float", 'min': 0},
+    "number_csuite_employees_fte_gender:gender:non_disclosed": {"type": "float", 'min': 0},
 
     #Integer (positive)
     "number_founders_still_employed_by_gender:gender:female": {"type": "integer", 'min': 0},
