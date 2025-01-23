@@ -125,16 +125,14 @@
         <div class="error-message">{{ file_error }}</div>
     {% else %}
         <h2>Summary</h2>
-        {% for company in companies %}
+        
             <details>
                 <summary>
-                    {{ company.company_name }} ({{ company.company_id }}) - 
-                    Valid: {{ company.valid_lines }} | 
-                    Errors: {{ company.invalid_lines }} | 
+                    {{ fund.company_name }} ({{fund.company_id}}) - 
+                    Valid: {{ fund.valid_lines }} | 
+                    Errors: {{ fund.invalid_lines }} | 
                     <span class="percentage">
-                        Min: {{ company.percent_min }}%  (missing: {{ company.missing_minimum }}), 
-                        Rec: {{ company.percent_rec }}% (missing: {{ company.missing_recommended }}), 
-                        Full: {{ company.percent_full }}% (missing: {{ company.missing_full }})
+                        Completion: {{ fund.percent_completion }}%
                     </span>
                 </summary>
                 <div>
@@ -145,11 +143,11 @@
                                 <th>Compound ID</th>
                                 <th>Value (Raw)</th>
                                 <th>Value (Interpreted)</th>
-                               
+                                
                             </tr>
                         </thead>
                         <tbody>
-                            {% for line in company.correct_lines %}
+                            {% for line in fund.correct_lines %}
                                 <tr class="valid">
                                     <td>{{ line.compound_id }}</td>
                                     <td>{{ line.raw_value }}</td>
@@ -170,7 +168,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for line in company.error_lines %}
+                            {% for line in fund.error_lines %}
                                 <tr class="error">
                                     <td>{{ line.compound_id }}</td>
                                     <td>{{ line.raw_value }}</td>
@@ -190,7 +188,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for line in company.unknown_lines %}
+                            {% for line in fund.unknown_lines %}
                                 <tr class="invalid">
                                     <td>{{ line.compound_id }}</td>
                                     <td>{{ line.raw_value }}</td>
@@ -210,7 +208,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for metric in company.missing_metrics %}
+                            {% for metric in fund.missing_metrics %}
                                 <tr>
                                     <td>{{ metric.compound_id }}</td>
                                     <td>{{ metric.requirement_level }}</td>
@@ -221,7 +219,7 @@
                     </table>
                 </div>
             </details>
-        {% endfor %}
+        
     {% endif %}
 </body>
 </html>

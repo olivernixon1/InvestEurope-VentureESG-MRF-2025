@@ -1,4 +1,4 @@
-from .options import business_identification_system, violations_ungc_oecd_guidelines, country_list, decarbonisation_strategy, ems_presence_select, eu_country_list, ghg_reduction_target, ghg_scope_list, ghg_scope_1_methodology, ghg_scope_2_methodology, ghg_scope_3_methodology, iso_currency_code, long_term_net_zero_goal, nace_divisions, whistleblower_procedure, yes_no_expanded
+from .options import OPTIONS
 
 SCHEMA_PORTCO = {
 
@@ -18,42 +18,42 @@ SCHEMA_PORTCO = {
     #String
     "business_identification_number_system": {
         "type": "string",
-         "allowed": business_identification_system,
+         "allowed": list(OPTIONS["business_identification_system"].keys()),
     },
 
     #0.1.3
     #STRING from country_list
     "country_of_domicile": {
         "type": "string",
-        "allowed": country_list,
+        "allowed": list(OPTIONS["country_list"].keys()),
     },
 
     #0.1.4
     #STRING from country_list
     "primary_country_of_operations": {
         "type": "string",
-        "allowed": country_list,
+        "allowed": list(OPTIONS["country_list"].keys()),
     },
 
     #0.1.5
     #STRING from country_list
     "other_EU_country_of_operation_1": {
         "type": "string",
-        "allowed": eu_country_list,
+        "allowed": list(OPTIONS["eu_country_list"].keys()),
     },
     
     #0.1.5.1
     #STRING from country_list
     "other_EU_country_of_operation_2": {
         "type": "string",
-        "allowed": eu_country_list,
+        "allowed": list(OPTIONS["eu_country_list"].keys()),
     },
     
     #0.1.6
     #STRING from nace_divisions
     "main_industry_classification": {
         "type": "string",
-        "allowed": nace_divisions,
+        "allowed": list(OPTIONS["nace_divisions"].keys()),
     },
     
     #0.1.7
@@ -104,7 +104,7 @@ SCHEMA_PORTCO = {
     #STRING from iso_currency_code
     "currency": {
         "type": "string",
-        "allowed": iso_currency_code,
+        "allowed": list(OPTIONS["iso_currency_code"].keys()),
     },
 
     #0.1.13
@@ -202,7 +202,7 @@ SCHEMA_PORTCO = {
     #STRING from yes_no_expanded
     "cybersecurity_data_management_policy": {
         "type": "string",
-        "allowed": yes_no_expanded,
+        "allowed": list(OPTIONS["yes_no_expanded"].keys()),
     },
     
     #0.2.2
@@ -382,7 +382,7 @@ SCHEMA_PORTCO = {
     #STRING from ems_presence_select
     "ems_implemented": {
         "type": "string",
-        "allowed": ems_presence_select,
+        "allowed": list(OPTIONS["ems_presence_select"].keys()),
     },
 
     #2.1.1.1
@@ -395,7 +395,7 @@ SCHEMA_PORTCO = {
     #STRING from ghg_scope_list
     "ghg_scope_measured_calculated": {
         "type": "string",
-        "allowed": ghg_scope_list,
+        "allowed": list(OPTIONS["ghg_scope_list"].keys()),
     },
 
     #2.2.2
@@ -410,7 +410,7 @@ SCHEMA_PORTCO = {
     #STRING from ghg_scope_1_methodology
     "total_scope_1_emissions_methodology": {
         "type": "string",
-        "allowed": ghg_scope_1_methodology,
+        "allowed": list(OPTIONS["ghg_scope_1_methodology"].keys()),
     },
 
     #2.2.4
@@ -421,7 +421,7 @@ SCHEMA_PORTCO = {
     #STRING from ghg_scope_2_methodology
     "total_scope_2_emissions_methodology": {
         "type": "string",
-        "allowed": ghg_scope_2_methodology,
+        "allowed": list(OPTIONS["ghg_scope_2_methodology"].keys()),
     },
 
     #2.2.5
@@ -432,7 +432,7 @@ SCHEMA_PORTCO = {
     #STRING from ghg_scope_3_methodology
     "total_scope_3_emissions_methodology": {
         "type": "string",
-        "allowed": ghg_scope_3_methodology,
+        "allowed": list(OPTIONS["ghg_scope_3_methodology"].keys()),
     },
 
     #2.2.5.2
@@ -499,21 +499,21 @@ SCHEMA_PORTCO = {
     #STRING from decarbonisation_strategy
     "decarbonisation_strategy_set": {
         "type": "string",
-        "allowed": decarbonisation_strategy,
+        "allowed": list(OPTIONS["decarbonisation_strategy"].keys()),
     },
 
     #2.3.2
     #STRING from ghg_reduction_target
     "ghg_reduction_target_set": {
         "type": "string",
-        "allowed": ghg_reduction_target,
+        "allowed": list(OPTIONS["ghg_reduction_target"].keys()),
     },
 
     #2.3.3
     #STRING from long_term_net_zero_goal
     "long_term_net_zero_goal_set": {
         "type": "string",
-        "allowed": long_term_net_zero_goal,
+        "allowed": list(OPTIONS["long_term_net_zero_goal"].keys()),
     },
 
     #2.4.1
@@ -613,7 +613,7 @@ SCHEMA_PORTCO = {
     #STRING from yes_no_expanded
     "implements_employee_survey_questionnaires": {
         "type": "string",
-        "allowed": yes_no_expanded,
+        "allowed": list(OPTIONS["yes_no_expanded"].keys()),
     },
 
     #3.4.2
@@ -624,7 +624,7 @@ SCHEMA_PORTCO = {
     #STRING from whistleblower_procedure
     "implemented_whistleblower_procedure": {
         "type": "string",
-        "allowed": whistleblower_procedure,
+        "allowed": list(OPTIONS["whistleblower_procedure"].keys()),
     },
 
     #3.5.1
@@ -647,7 +647,7 @@ SCHEMA_PORTCO = {
     #STRING from yes_no_expanded
     "human_rights_due_diligence_process": {
         "type": "string",
-        "allowed": yes_no_expanded,
+        "allowed": list(OPTIONS["yes_no_expanded"].keys()),
     },
 
     #4.1.1, 4.1.2, 4.1.3, 4.1.4, 4.1.5
@@ -855,7 +855,7 @@ SCHEMA_PORTCO = {
     #STRING from yes_no
     "type_of_violations_ungc_oecd_guidelines": {
         "type": "string",
-        "allowed": violations_ungc_oecd_guidelines,
+        "allowed": list(OPTIONS["violations_ungc_oecd_guidelines"].keys()),
     },
     
     #PAI 11.1
@@ -872,4 +872,109 @@ SCHEMA_PORTCO = {
         "allowed": ["yes", "no"],
     },
     
+}
+
+# Dictionary mapping compound IDs to their units
+COMPOUND_ID_UNITS = {
+    "percentage_turnover_eu_taxonomy": "%",
+    "percentage_capex_eu_taxonomy": "%",
+    "percentage_opex_eu_taxonomy": "%",
+    "unadjusted_gender_pay_gap": "%",
+    "percentage_employees_responding_employee_survey": "%",
+    "number_of_data_breaches": "breaches",
+    "days_lost_due_to_injury": "days",
+    "number_of_workrelated_fatalities": "fatalities",
+    "total_ftes_end_of_report_year": "FTEs",
+    "total_ftes_end_of_previous_report_year": "FTEs",
+    "number_of_ftes_end_of_report_year_female": "FTEs",
+    "number_of_ftes_end_of_report_year_non_binary": "FTEs",
+    "number_of_ftes_end_of_report_year_non_disclosed": "FTEs",
+    "number_of_ftes_end_of_report_year_male": "FTEs",
+    "number_of_new_hires_inside_eu_fte": "FTEs",
+    "number_of_new_hires_outside_eu_fte": "FTEs",
+    "number_of_leavers_inside_eu_fte": "FTEs",
+    "number_of_leavers_outside_eu_fte": "FTEs",
+    "number_of_new_hires_ma_fte": "FTEs",
+    "number_of_leavers_ma_fte": "FTEs",
+    "number_of_organic_net_new_hires_fte": "FTEs",
+    "number_of_total_net_new_hires_fte": "FTEs",
+    "turnover_fte": "FTEs",
+    "gross_revenue": "currency",
+    "gross_revenue_inside_eu": "currency",
+    "gross_revenue_outside_eu": "currency",
+    "annual_balance_sheet_assets_total": "currency",
+    "annual_balance_sheet_assets_total_inside_eu": "currency",
+    "annual_balance_sheet_assets_total_outside_eu": "currency",
+    "turnover": "currency",
+    "turnover_inside_eu": "currency",
+    "turnover_outside_eu": "currency",
+    "high_impact_climate_section_a_agriculture_forestry_fishing_gross_revenue": "currency",
+    "high_impact_climate_section_b_mining_quarrying_gross_revenue": "currency",
+    "high_impact_climate_section_c_manufacturing_gross_revenue": "currency",
+    "high_impact_climate_section_d_electricity_gas_steam_air_conditioning_supply_gross_revenue": "currency",
+    "high_impact_climate_section_e_water_supply_sewerage_waste_management_remediation_activities_gross_revenue": "currency",
+    "high_impact_climate_section_f_construction_gross_revenue": "currency",
+    "high_impact_climate_section_g_wholesale_retail_trade_repair_motor_vehicles_motorcycles_gross_revenue": "currency",
+    "high_impact_climate_section_h_transportation_storage_gross_revenue": "currency",
+    "high_impact_climate_section_l_real_estate_activities_gross_revenue": "currency",
+    "high_impact_climate_section_a_agriculture_forestry_fishing_energy_consumption_gwh": "GWh",
+    "high_impact_climate_section_b_mining_quarrying_energy_consumption_gwh": "GWh",
+    "high_impact_climate_section_c_manufacturing_energy_consumption_gwh": "GWh",
+    "high_impact_climate_section_d_electricity_gas_steam_air_conditioning_supply_energy_consumption_gwh": "GWh",
+    "high_impact_climate_section_e_water_supply_sewerage_waste_management_remediation_activities_energy_consumption_gwh": "GWh",
+    "high_impact_climate_section_f_construction_energy_consumption_gwh": "GWh",
+    "high_impact_climate_section_g_wholesale_retail_trade_repair_motor_vehicles_motorcycles_energy_consumption_gwh": "GWh",
+    "high_impact_climate_section_h_transportation_storage_energy_consumption_gwh": "GWh",
+    "high_impact_climate_section_l_real_estate_activities_energy_consumption_gwh": "GWh",
+    "average_hours_training_employees_taken_during_reporting_period": "hours",
+    "number_of_esg_incidents": "incidents",
+    "number_of_workrelated_injuries": "injuries",
+    "total_energy_consumption": "kWh",
+    "energy_consumption_renewable": "kWh",
+    "non_renewable_energy_consumption": "kWh",
+    "total_energy_production": "kWh",
+    "non_renewable_energy_production": "kWh",
+    "renewable_energy_production": "kWh",
+    "total_csuite_employees": "people",
+    "number_of_csuite_female": "people",
+    "number_of_csuite_non_binary": "people",
+    "number_of_csuite_non_disclosed": "people",
+    "number_of_csuite_male": "people",
+    "total_founders_still_employed": "people",
+    "number_of_founders_still_employed_female": "people",
+    "number_of_founders_still_employed_non_binary": "people",
+    "number_of_founders_still_employed_non_disclosed": "people",
+    "number_of_founders_still_employed_male": "people",
+    "total_number_of_board_members": "people",
+    "number_of_board_members_female": "people",
+    "number_of_board_members_non_binary": "people",
+    "number_of_board_members_non_disclosed": "people",
+    "number_of_board_members_male": "people",
+    "number_of_board_members_underrepresented_groups": "people",
+    "number_of_independent_board_members": "people",
+    "total_ghg_emissions": "tCO2e",
+    "total_scope_1_emissions": "tCO2e",
+    "total_scope_2_emissions": "tCO2e",
+    "total_scope_3_emissions": "tCO2e",
+    "scope_3_emissions_purchased_goods_and_services": "tCO2e",
+    "scope_3_emissions_capital_goods": "tCO2e",
+    "scope_3_emissions_fuel_and_energy_related_not_in_scopes_1_2": "tCO2e",
+    "scope_3_emissions_upstream_transportation_distribution": "tCO2e",
+    "scope_3_emissions_waste_generated_in_operations": "tCO2e",
+    "scope_3_emissions_business_travel": "tCO2e",
+    "scope_3_emissions_employee_commuting": "tCO2e",
+    "scope_3_emissions_upstream_leased_assets": "tCO2e",
+    "scope_3_emissions_downstream_transportation_distribution": "tCO2e",
+    "scope_3_emissions_processing_of_sold_products": "tCO2e",
+    "scope_3_emissions_use_of_sold_products": "tCO2e",
+    "scope_3_emissions_endoflife_treatment_of_sold_products": "tCO2e",
+    "scope_3_emissions_downstream_leased_assets": "tCO2e",
+    "scope_3_emissions_franchises": "tCO2e",
+    "scope_3_emissions_investments": "tCO2e",
+    "total_scope_2_emissions_location_based": "tCO2e",
+    "total_scope_2_emissions_market_based": "tCO2e",
+    "total_ghg_emissions_location_based": "tCO2e",
+    "total_ghg_emissions_market_based": "tCO2e",
+    "total_emissions_to_water": "tonnes (metric)",
+    "quantity_hazardous_radioactive_waste_generated": "tonnes (metric)",
 }

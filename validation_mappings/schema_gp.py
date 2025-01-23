@@ -1,5 +1,4 @@
-from .options_gp import ems_presence_select, ghg_scope_list, ghg_scope_1_methodology, ghg_scope_2_methodology, ghg_scope_3_methodology
-
+from .options_gp import OPTIONS_GP
 SCHEMA_GP = {
 
     #String
@@ -237,7 +236,7 @@ SCHEMA_GP = {
     #STRING from ems_presence_select
     "ems_implemented": {
         "type": "string",
-        "allowed": ems_presence_select,
+        "allowed": list(OPTIONS_GP["ems_presence_select"].keys()),
     },
 
     #String
@@ -248,7 +247,7 @@ SCHEMA_GP = {
     #STRING from ghg_scope_list
     "ghg_scope_measured_calculated": {
         "type": "string",
-        "allowed": ghg_scope_list,
+        "allowed": list(OPTIONS_GP["ghg_scope_list"].keys()),
     },
 
     #Float (positive)
@@ -260,7 +259,7 @@ SCHEMA_GP = {
     #STRING from ghg_scope_1_methodology
     "total_scope_1_emissions_methodology": {
         "type": "string",
-        "allowed": ghg_scope_1_methodology,
+        "allowed": list(OPTIONS_GP["ghg_scope_1_methodology"].keys()),
     },
 
     #Float (positive)
@@ -269,7 +268,7 @@ SCHEMA_GP = {
     #STRING from ghg_scope_2_methodology
     "total_scope_2_emissions_methodology": {
         "type": "string",
-        "allowed": ghg_scope_2_methodology,
+        "allowed": list(OPTIONS_GP["ghg_scope_2_methodology"].keys()),
     },
 
     #Float (positive)
@@ -278,7 +277,7 @@ SCHEMA_GP = {
     #STRING from ghg_scope_3_methodology
     "total_scope_3_emissions_methodology": {
         "type": "string",
-        "allowed": ghg_scope_3_methodology,
+        "allowed": list(OPTIONS_GP["ghg_scope_3_methodology"].keys()),
     },
     
     #Float (positive)
@@ -359,5 +358,133 @@ SCHEMA_GP = {
     
     #Integer (positive)
     "number_of_partners_male": {"type": "integer", 'min': 0},
-    
 }
+
+GP_COMPOUND_ID_UNITS = {
+    "total_ghg_emissions": "tCO2e",
+    "total_scope_1_emissions": "tCO2e",
+    "total_scope_2_emissions": "tCO2e",
+    "total_scope_3_emissions": "tCO2e",
+    "carbon_offset_tco2e": "tCO2e",
+    "total_ftes_end_of_report_year": "FTEs",
+    "number_of_ftes_end_of_report_year_female": "FTEs",
+    "number_of_ftes_end_of_report_year_non_binary": "FTEs",
+    "number_of_ftes_end_of_report_year_non_disclosed": "FTEs",
+    "number_of_ftes_end_of_report_year_male": "FTEs",
+    "total_number_of_partners": "people",
+    "number_of_partners_female": "people",
+    "number_of_partners_non_binary": "people",
+    "number_of_partners_non_disclosed": "people",
+    "number_of_partners_male": "people",
+    "turnover_fte": "FTEs"
+}
+
+ALL_GP_METRICS = [
+    "company_name",
+    "use_of_international_disclosing_standard",
+    "use_of_international_disclosing_standard_tcfd",
+    "use_of_international_disclosing_standard_gri",
+    "use_of_international_disclosing_standard_sasb",
+    "use_of_international_disclosing_standard_cdsb",
+    "use_of_international_disclosing_standard_ghg_protocol",
+    "use_of_international_disclosing_standard_tnfd",
+    "use_of_international_disclosing_standard_sbti",
+    "use_of_international_disclosing_standard_cdp",
+    "use_of_international_disclosing_standard_wef",
+    "use_of_international_disclosing_standard_other",
+    "participates_in_sustainability_climate_initiatives",
+    "participates_in_sustainability_climate_initiatives_pri",
+    "participates_in_sustainability_climate_initiatives_nzaoa",
+    "participates_in_sustainability_climate_initiatives_nzami",
+    "participates_in_sustainability_climate_initiatives_ici",
+    "participates_in_sustainability_climate_initiatives_the_investor_agenda",
+    "participates_in_sustainability_climate_initiatives_transition_pathway_initiative",
+    "participates_in_sustainability_climate_initiatives_iigcc",
+    "participates_in_sustainability_climate_initiatives_other",
+    "code_of_conduct",
+    "overall_sustainability_policy",
+    "environmental_policy",
+    "anti_discrimination_and_equal_opportunities_policy",
+    "diversity_inclusion_policy",
+    "salary_remuneration_policy",
+    "health_and_safety_policy",
+    "human_rights_policy",
+    "anti_corruption_bribery_policy",
+    "data_privacy_security_policy",
+    "supply_chain_policy",
+    "cybersecurity_data_management_policy",
+    "ems_implemented",
+    "other_ems_certification",
+    "ghg_scope_measured_calculated",
+    "total_ghg_emissions",
+    "total_scope_1_emissions",
+    "total_scope_1_emissions_methodology",
+    "total_scope_2_emissions",
+    "total_scope_2_emissions_methodology",
+    "total_scope_3_emissions",
+    "total_scope_3_emissions_methodology",
+    "carbon_offset_tco2e",
+    "environmental_impact_international_organisations",
+    "environmental_impact_european_commission",
+    "environmental_impact_national_promotional_institutions",
+    "environmental_impact_other_public_bodies",
+    "environmental_impact_private_non_profit",
+    "environmental_impact_other_private",
+    "total_ftes_end_of_report_year",
+    "number_of_ftes_end_of_report_year_female",
+    "number_of_ftes_end_of_report_year_non_binary",
+    "number_of_ftes_end_of_report_year_non_disclosed",
+    "number_of_ftes_end_of_report_year_male",
+    "total_number_of_partners",
+    "number_of_partners_female",
+    "number_of_partners_non_binary",
+    "number_of_partners_non_disclosed",
+    "number_of_partners_male",
+    "turnover_fte"
+]
+
+
+REQUIRED_GP_METRICS = [
+    "company_name",
+    "use_of_international_disclosing_standard",
+    "participates_in_sustainability_climate_initiatives",
+    "code_of_conduct",
+    "overall_sustainability_policy",
+    "environmental_policy",
+    "anti_discrimination_and_equal_opportunities_policy",
+    "diversity_inclusion_policy",
+    "salary_remuneration_policy",
+    "health_and_safety_policy",
+    "human_rights_policy",
+    "anti_corruption_bribery_policy",
+    "data_privacy_security_policy",
+    "supply_chain_policy",
+    "cybersecurity_data_management_policy",
+    "ems_implemented",
+    "ghg_scope_measured_calculated",
+    "total_ghg_emissions",
+    "total_scope_1_emissions",
+    "total_scope_1_emissions_methodology",
+    "total_scope_2_emissions",
+    "total_scope_2_emissions_methodology",
+    "total_scope_3_emissions",
+    "total_scope_3_emissions_methodology",
+    "carbon_offset_tco2e",
+    "environmental_impact_international_organisations",
+    "environmental_impact_european_commission",
+    "environmental_impact_national_promotional_institutions",
+    "environmental_impact_other_public_bodies",
+    "environmental_impact_private_non_profit",
+    "environmental_impact_other_private",
+    "total_ftes_end_of_report_year",
+    "number_of_ftes_end_of_report_year_female",
+    "number_of_ftes_end_of_report_year_non_binary",
+    "number_of_ftes_end_of_report_year_non_disclosed",
+    "number_of_ftes_end_of_report_year_male",
+    "total_number_of_partners",
+    "number_of_partners_female",
+    "number_of_partners_non_binary",
+    "number_of_partners_non_disclosed",
+    "number_of_partners_male",
+    "turnover_fte"
+]
