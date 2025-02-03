@@ -2,7 +2,7 @@ import csv
 import os
 import uuid
 from cerberus import Validator
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, request, render_template, jsonify, send_file, after_this_request
 import openpyxl
 from collections import defaultdict
 
@@ -500,8 +500,230 @@ def upload_files():
     # Render results as HTML table
     return render_template('validation_results.html', companies=validation_results)
 
+@app.route('/convert_valid_data_to_excel', methods=['POST'])
+def convert_valid_data_to_excel():
+    try:
+        # Extract JSON data from request
+        data = request.get_json()
+        companies_data = data.get("companies", {})
 
+        if not companies_data:
+            return jsonify({"error": "No valid company data found"}), 400
 
+        # Define paths
+        template_path = 'InvestEurope_Template.xlsx'
+        output_path = os.path.join(app.config['UPLOAD_FOLDER'], "InvestEurope_Template_Completed.xlsx")
+
+        if not os.path.exists(template_path):
+            return jsonify({"error": f"The template file '{template_path}' was not found."}), 500
+
+        wb = openpyxl.load_workbook(template_path)
+        ws = wb["4. Aggregated PC level"]
+
+        # Row mapping 
+        row_mapping = {
+            'company_name': [13],
+            'business_identification_number': [14],
+            'business_identification_number_system': [15],
+            'country_of_domicile': [16],
+            'primary_country_of_operations': [17],
+            'other_EU_country_of_operation_1': [18],
+            'other_EU_country_of_operation_2': [19],
+            'main_industry_classification': [20],
+            'total_ftes_end_of_report_year': [21],
+            'total_ftes_end_of_previous_report_year': [22],
+            'gross_revenue': [23],
+            'gross_revenue_inside_eu': [24],
+            'gross_revenue_outside_eu': [25],
+            'annual_balance_sheet_assets_total': [26],
+            'annual_balance_sheet_assets_total_inside_eu': [27],
+            'annual_balance_sheet_assets_total_outside_eu': [28],
+            'turnover': [29],
+            'turnover_inside_eu': [30],
+            'turnover_outside_eu': [31],
+            'currency': [32],
+            'listed': [33],
+            'listed_ticker': [34],
+            'code_of_conduct': [39],
+            'overall_sustainability_policy': [40],
+            'environmental_policy': [41],
+            'anti_discrimination_and_equal_opportunities_policy': [42],
+            'diversity_inclusion_policy': [43],
+            'salary_remuneration_policy': [44],
+            'health_and_safety_policy': [45],
+            'human_rights_policy': [46],
+            'anti_corruption_bribery_policy': [47],
+            'data_privacy_security_policy': [48],
+            'supply_chain_policy': [49],
+            'cybersecurity_data_management_policy': [50],
+            'dedicated_sustainability_staff': [51],
+            'sustainability_staff_ceo': [53],
+            'sustainability_staff_cso': [54],
+            'sustainability_staff_cfo': [55],
+            'sustainability_staff_board': [56],
+            'sustainability_staff_management': [57],
+            'sustainability_staff_none_of_above': [58],
+            'occurrence_of_esg_incidents': [62],
+            'number_of_esg_incidents': [63],
+            'eu_taxonomy_assessment': [69],
+            'percentage_turnover_eu_taxonomy': [70],
+            'percentage_capex_eu_taxonomy': [71],
+            'percentage_opex_eu_taxonomy': [72],
+            'tobacco_activities': [76],
+            'percentage_turnover_tobacco_activities': [77],
+            'hard_coal_and_lignite_activities': [78],
+            'percentage_turnover_hard_coal_and_lignite_activities': [79],
+            'oil_fuels_activities': [80],
+            'percentage_turnover_oil_fuels_activities': [81],
+            'gaseous_fuels_activities': [82],
+            'percentage_turnover_gaseous_fuels_activities': [83],
+            'high_ghg_intensity_electricity_generation': [84],
+            'percentage_turnover_high_ghg_intensity_electricity_generation': [85],
+            'subject_to_csrd_reporting': [89],
+            'ems_implemented': [95],
+            'other_ems_certification': [96],
+            'ghg_scope_measured_calculated': [100],
+            'total_ghg_emissions': [101],
+            'total_scope_1_emissions': [102, 226],
+            'total_scope_1_emissions_methodology': [103],
+            'total_scope_2_emissions': [104],
+            'total_scope_2_emissions_methodology': [105],
+            'total_scope_3_emissions': [106, 229],
+            'total_scope_3_emissions_methodology': [107],
+            'scope_3_emissions_purchased_goods_and_services': [108],
+            'scope_3_emissions_capital_goods': [109],
+            'scope_3_emissions_fuel_and_energy_related_not_in_scopes_1_2': [110],
+            'scope_3_emissions_upstream_transportation_distribution': [111],
+            'scope_3_emissions_waste_generated_in_operations': [112],
+            'scope_3_emissions_business_travel': [113],
+            'scope_3_emissions_employee_commuting': [114],
+            'scope_3_emissions_upstream_leased_assets': [115],
+            'scope_3_emissions_downstream_transportation_distribution': [116],
+            'scope_3_emissions_processing_of_sold_products': [117],
+            'scope_3_emissions_use_of_sold_products': [118],
+            'scope_3_emissions_endoflife_treatment_of_sold_products': [119],
+            'scope_3_emissions_downstream_leased_assets': [120],
+            'scope_3_emissions_franchises': [121],
+            'scope_3_emissions_investments': [122],
+            'decarbonisation_strategy_set': [126],
+            'ghg_reduction_target_set': [127],
+            'long_term_net_zero_goal_set': [128],
+            'total_energy_consumption': [132, 239],
+            'energy_consumption_renewable': [133, 241],
+            'total_emissions_to_water': [137, 283],
+            'quantity_hazardous_radioactive_waste_generated': [138, 287],
+            'circular_economy_principles': [139],
+            'sites_affecting_biodiversity_areas': [143, 279],
+            'number_of_ftes_end_of_report_year_female': [149],
+            'number_of_ftes_end_of_report_year_non_binary': [150],
+            'number_of_ftes_end_of_report_year_non_disclosed': [151],
+            'number_of_ftes_end_of_report_year_male': [152],
+            'total_csuite_employees': [153],
+            'number_of_csuite_female': [154],
+            'number_of_csuite_non_binary': [155],
+            'number_of_csuite_non_disclosed': [156],
+            'number_of_csuite_male': [157],
+            'total_founders_still_employed': [158],
+            'number_of_founders_still_employed_female': [159],
+            'number_of_founders_still_employed_non_binary': [160],
+            'number_of_founders_still_employed_non_disclosed': [161],
+            'number_of_founders_still_employed_male': [162],
+            'unadjusted_gender_pay_gap': [166, 300], 
+            'number_of_new_hires_inside_eu_fte': [170],
+            'number_of_new_hires_outside_eu_fte': [171],
+            'number_of_leavers_inside_eu_fte': [172],
+            'number_of_leavers_outside_eu_fte': [173],
+            'number_of_new_hires_ma_fte': [174],
+            'number_of_leavers_ma_fte': [175],
+            'number_of_organic_net_new_hires_fte': [176],
+            'number_of_total_net_new_hires_fte': [177],
+            'turnover_fte': [178],
+            'implements_employee_survey_questionnaires': [182],
+            'percentage_employees_responding_employee_survey': [183],
+            'implemented_whistleblower_procedure': [184],
+            'average_hours_training_employees_taken_during_reporting_period': [188],
+            'number_of_workrelated_injuries': [192],
+            'number_of_workrelated_fatalities': [193],
+            'days_lost_due_to_injury': [194],
+            'human_rights_due_diligence_process': [198],
+            'total_number_of_board_members': [204, 306],
+            'number_of_board_members_female': [205, 304],
+            'number_of_board_members_non_binary': [206],
+            'number_of_board_members_non_disclosed': [207],
+            'number_of_board_members_male': [208, 305],
+            'number_of_board_members_underrepresented_groups': [209],
+            'number_of_independent_board_members': [210],
+            'number_of_data_breaches': [214],
+            'total_scope_2_emissions_location_based': [227],
+            'total_scope_2_emissions_market_based': [228],
+            'total_ghg_emissions_location_based': [230],
+            'total_ghg_emissions_market_based': [231],
+            'active_in_fossil_sector': [235],
+            'non_renewable_energy_consumption': [240],
+            'total_energy_production': [242],
+            'non_renewable_energy_production': [243],
+            'renewable_energy_production': [244],
+            'high_impact_climate_section_a_agriculture_forestry_fishing': [249],
+            'high_impact_climate_section_a_agriculture_forestry_fishing_energy_consumption_gwh': [250],
+            'high_impact_climate_section_a_agriculture_forestry_fishing_gross_revenue': [251],
+            'high_impact_climate_section_b_mining_quarrying': [252],
+            'high_impact_climate_section_b_mining_quarrying_energy_consumption_gwh': [253],
+            'high_impact_climate_section_b_mining_quarrying_gross_revenue': [254],
+            'high_impact_climate_section_c_manufacturing': [255],
+            'high_impact_climate_section_c_manufacturing_energy_consumption_gwh': [256],
+            'high_impact_climate_section_c_manufacturing_gross_revenue': [257],
+            'high_impact_climate_section_d_electricity_gas_steam_air_conditioning_supply': [258],
+            'high_impact_climate_section_d_electricity_gas_steam_air_conditioning_supply_energy_consumption_gwh': [259],
+            'high_impact_climate_section_d_electricity_gas_steam_air_conditioning_supply_gross_revenue': [260],
+            'high_impact_climate_section_e_water_supply_sewerage_waste_management_remediation_activities': [261],
+            'high_impact_climate_section_e_water_supply_sewerage_waste_management_remediation_activities_energy_consumption_gwh': [262],
+            'high_impact_climate_section_e_water_supply_sewerage_waste_management_remediation_activities_gross_revenue': [263],
+            'high_impact_climate_section_f_construction': [264],
+            'high_impact_climate_section_f_construction_energy_consumption_gwh': [265],
+            'high_impact_climate_section_f_construction_gross_revenue': [266],
+            'high_impact_climate_section_g_wholesale_retail_trade_repair_motor_vehicles_motorcycles': [267],
+            'high_impact_climate_section_g_wholesale_retail_trade_repair_motor_vehicles_motorcycles_energy_consumption_gwh': [268],
+            'high_impact_climate_section_g_wholesale_retail_trade_repair_motor_vehicles_motorcycles_gross_revenue': [269],
+            'high_impact_climate_section_h_transportation_storage': [270],
+            'high_impact_climate_section_h_transportation_storage_energy_consumption_gwh': [271],
+            'high_impact_climate_section_h_transportation_storage_gross_revenue': [272]
+        }
+
+        current_col = 5  # Starting column (E)
+        
+
+        # Iterate over the valid data (companies)
+        for company_id, metrics in companies_data.items():
+            print(f"Processing company '{company_id}' at column {current_col}")
+            result = {item["compound_id"]: item["interpreted_value"] for item in metrics}
+            for metric, value in result.items():
+                if not value.strip():
+                    print(f"Skipping empty value for metric '{metric}' in company '{company_id}'.")
+                    continue
+                rows = row_mapping.get(metric, [])
+                if not rows:
+                    print(f"Warning: No row mapping found for metric '{metric}'.")
+                    continue
+                for row in rows:
+                    print(f"Writing '{value}' to row {row}, column {current_col}")
+                    ws.cell(row=row, column=current_col).value = value
+            current_col += 1
+
+        # Save the file
+        wb.save(output_path)
+        
+        @after_this_request
+        def delete_file(response):
+            if os.path.exists(output_path):
+                os.remove(output_path)
+            return response
+        
+       # Return the file as a response for download
+        return send_file(output_path, as_attachment=True, download_name="InvestEurope_Template_Completed.xlsx")
+
+    except Exception as e:
+        return jsonify({"error": f"An unexpected error occurred: {e}"}), 500
+    
 ### FUND VALIDATION LOGIC ###
 
 def validate_metrics_by_fund(fund_data: dict, schema: dict):

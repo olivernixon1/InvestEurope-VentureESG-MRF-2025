@@ -124,6 +124,41 @@
     {% if file_error %}
         <div class="error-message">{{ file_error }}</div>
     {% else %}
+        <button id="convertToExcelBtn">Convert to Excel</button>
+
+        <script>
+            document.getElementById("convertToExcelBtn").addEventListener("click", function() {
+
+                // Assuming companies is a list of dictionaries
+                let companiesList = {{ companies | tojson | safe }};
+                
+                // Convert the list of dictionaries into a dictionary with increasing numbers as keys
+                let companiesDict = {};
+                companiesList.forEach((company, index) => {
+                    companiesDict[index] = company.correct_lines;
+                });
+
+                fetch("{{ url_for('convert_valid_data_to_excel') }}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ companies: companiesDict })
+                }).then(response => response.blob())  // Use blob to handle the file as binary data
+                .then(blob => {
+                    // Create a temporary URL for the downloaded file
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = url;
+                    a.download = "InvestEurope_Template_Completed.xlsx";  // Set the file name
+                    document.body.appendChild(a);
+                    a.click();  // Trigger the download
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);  // Clean up the URL object
+                })
+                .catch(error => console.error("Error:", error));
+            });
+        </script>
         <h2>Summary</h2>
         {% for company in companies %}
             <details>
